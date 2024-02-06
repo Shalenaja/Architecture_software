@@ -7,10 +7,13 @@ public class PoligonalModel {
     public List<Poligon> Poligons;
     public List<Texture> Textures;
 
-    public PoligonalModel(List<Texture> Textures) {
+    public PoligonalModel(List<Texture> Textures)
+
+            throws Exception {
         this.Poligons = new ArrayList<>();
         this.Textures = Textures;
 
         Poligons.add(new Poligon(null));
     }
+
 }

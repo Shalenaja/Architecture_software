@@ -9,14 +9,23 @@ public class Scene {
     List<Flash> Flashes;
     List<Camera> Cameras;
 
-    public Scene(int id, List<PoligonalModel> Models, List<Flash> Flashes, List<Camera> Cameras) {
+    public Scene(int id, List<PoligonalModel> Models, List<Flash> Flashes, List<Camera> Cameras) throws IllegalArgumentException {
+        if(Cameras.size() < 1) 
+            try {
+                throw new IllegalArgumentException("size List<Camera> cannot be less than 1");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        if(Models.size() < 1)
+            try {
+                throw new IllegalArgumentException("size List<PoligonalModel> cannot be less than 1");
+            } catch (Exception e) {                
+                e.printStackTrace();
+            }  
         this.id = id;
         this.Models = Models;
         this.Flashes = Flashes;
         this.Cameras = Cameras;
-
-        Models.add(new PoligonalModel(null));
-        Cameras.add(new Camera(null, null));
     }
 
     public void method1(Type type) {
