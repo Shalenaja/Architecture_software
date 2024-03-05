@@ -1,0 +1,269 @@
+openapi: 3.0.3
+info:
+  title: Использование робот-пылесоса
+  version: 0.0.1
+servers:
+  - url: http://localhost:8080/api/v1
+    description: Dev server
+paths:
+  /vacuum:
+    get:
+      summary: Метод по выбору пылесоса
+      tags:
+        - Vacuums
+      operationId: getAllVacuums
+      responses: 
+        "200" : 
+          description: Успешный ответ со списком пылесосов
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/Vacuum"
+        "500" : 
+          description: Внутренняя ошибка сервера
+    post:
+      summary: Добавить пылесос
+      tags:
+        - Vacuums
+      operationId: CreateArrayVacuum
+      requestBody:
+        content:
+          aplication/json:
+            schema: 
+              $ref: "#/components/schemas/Vacuum"
+      responses: 
+        "200" : 
+          description: Успешный ответ со списком пылесосов
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/Vacuum"
+        "default" :
+          description: Прочие ошибки
+          content: 
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+  /vacuum/{vacuum_id}:
+    delete:
+      summary: Удалить пылесос
+      tags:
+        - Vacuums
+      operationId: deleteVacuumById
+      parametrs:
+        - name: vacuum_id
+          in: path
+          reguired: true
+          description: Id удаляемого пылесоса
+          schema:
+            type: integer
+          example: 185
+      responses:
+        "200" : 
+          description: Успешное удаление пылесоса
+          content:
+            aplication/json: {}
+        "400" : 
+          description: Пылесос не найден
+  /schedule:
+    get:
+      summary: Метод по просмотру расписания
+      tags:
+        - Schedules
+      operationId: getAllschedule
+      responses: 
+        "200" : 
+          description: Успешный ответ со списком расписаний уборки
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/Schedule"
+        "default" :
+          description: Прочие ошибки
+          content: 
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+    post:
+      summary: Добавить уборку
+      tags:
+        - Schedules
+      operationId: CreateSchedule
+      requestBody:
+        content:
+          aplication/json:
+            schema: 
+              $ref: "#/components/schemas/Schedule"
+      responses: 
+        "200" : 
+          description: Успешный ответ со списком уборки
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/Schedule"
+        "default" :
+          description: Прочие ошибки
+          content: 
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/Error" 
+  /schedule/{schedule_id}:
+    delete:
+      summary: Отмена уборки
+      tags:
+        - Schedules
+      operationId: deleteScheduleById
+      parametrs:
+        - name: schedule_id
+          in: path
+          reguired: true
+          description: Id отменяемой уборки
+          schema:
+            type: integer
+          example: 185
+      responses:
+        "200" : 
+          description: Успешная отмена уборки
+          content:
+            aplication/json: {}
+        "400" : 
+          description: Расписание не найдено
+  /users:
+    post:
+      summary: Создать пользователя
+      tags:
+        - Users
+      operationId: CeatePersonalArea
+      requestBody:
+        content:
+          aplication/json:
+            schema: 
+              $ref: "#/components/schemas/User"
+      responses: 
+        "200" : 
+          description: Пользователь успешно создан
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "500" : 
+          description: Внутренняя ошибка сервера
+  /users/{user_name}: 
+    get:
+      summary: получить пользователя
+      tags:
+        - Users
+      operationId: getUserById
+      parametrs:
+        - name: user_name
+          in: path
+          reguired: true
+          description: name пользователя
+          schema:
+            type: string
+          example: masha
+      responses: 
+        "200" : 
+          description: Пользователь найден
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400" : 
+          description: Пользователь не найден
+  /users/{user_id}: 
+    delete:
+      summary: удалить пользователя
+      tags:
+        - Users
+      operationId: removeUserById
+      parametrs:
+        - name: user_id
+          in: path
+          reguired: true
+          description: Id пользователя
+          schema:
+            type: integer
+          example: 10
+      responses: 
+        "200" : 
+          description: Пользователь удален
+          content:
+            aplication/json:
+              schema:
+                $ref: "#/components/schemas/User"
+        "400" : 
+          description: Пользователь не найден  
+        "500" : 
+          description: Внутренняя ошибка сервера
+components:
+  schemas:
+    Vacuum:
+      type: object
+      properties:
+        vacuum_id:
+          type: integer
+          example: 111
+        model:
+          type: string
+          example: MX-256
+        fabricNumber: 
+          type: string
+          example: 2RT256
+        idCroup:
+          type: integer
+      ipAdress: 
+          type: integer
+          example: 192.168.0.1
+    Vacuums:
+      type: array
+      items:
+        $ref: "#/components/schemas/Vacuum"
+    Schedule:
+      type: object
+      properties:
+        schelule_id:
+          type: integer
+          example: 1
+        id_robot:
+          type: integer
+          example: 11
+        dateTime:
+          type: string
+          example: 01.01.2024 10.00
+        idTypeJob:
+          type: integer
+          example: 111
+    Schedules:
+      type: array
+      items:
+        $ref: "#/components/schemas/Schedule"
+    Error:
+      type: object
+      properties:
+        code_arror:
+          type: integer
+          example: 55
+        code_message:
+          type: string
+          example: error
+    User:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          example: 10
+        name:
+          type: string
+          example: masha
+        hash: 
+          type: string
+          example: masha_hash
+        email:
+          type: string
+          example: masha@mail.ru
+    Users:
+      type: array
+      items:
+        $ref: "#/components/schemas/User"
+        
